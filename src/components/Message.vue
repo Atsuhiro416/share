@@ -4,10 +4,27 @@
         <div class="message">
           <div class="flex">
             <p class="name">{{value.name}}</p>
-            <img src="../assets/heart.png" alt="" class="icon">
+            <img src="../assets/heart.png" alt="" class="icon" @click="fav(key)">
             <div class="number">{{value.like.lenght}}</div>
-            <img src="../assets/cross.png" alt="" class="icon">
-            <img src="../assets/detail.png" alt="" class="icon detail">
+            <img
+              class="icon"
+              src="../assets/cross.png"
+              @click="del(key)"
+              alt=""
+              v-if="path && profile"
+            >
+            <img
+              class="icon detail"
+              src="../assets/detail.png"
+              @click="
+                $router.psuh({
+                  path: '/detail/' + value.item.id,
+                  params: { id: value.item.id},
+                })
+              "
+              alt=""
+              v-if="profile"
+            >
           </div>
           <p class="text">{{value.share}}</p>
         </div>
@@ -16,12 +33,107 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: ["id"],
   data() {
     return {
-      shares: [{ name: "太郎", like: [], share: "初めまして" }]
+      shares: [],
+      path: true,
+      profile: true,
     };
-  }
+  },
+  method: {
+    fav(index) {
+      let result = this.shares[index].like.some((value) => {
+        return value.user_id == this.$store.state.user.id;
+      });
+      if(result) {
+        this.shares[index].like.forEach((element) => {
+          if (element.user_id == this.$store.state.user.id) {
+            axios({
+              method: "delete",
+              url: "https://evening-sierra-85418.herokuapp.com/api/like",
+              data: {
+                share_id: this.shares[index].item.id,
+                user_id: this.$store.state.user.id,
+              },
+            }).then((response) => {
+              console.log(response);
+              this.$router.go({
+                path: this.$router.currentRouter.path,
+                force: true,
+              });
+            });
+          }
+        });
+      } else {
+        axios
+          .post("https://evening-sierra-85418.herokuapp.com/api/like", {
+            share_id: this.shares[index].item.id,
+            user_id: this.$router.state.user.id,
+          })
+          .then((response) => {
+            console.log(response);
+            this.$router.go({
+              path: this.$router.currentRouter.path,
+              force: true,
+            });
+          });
+      }
+    },
+    del(index) {
+      axios
+        .delete(
+          "https://evening-sierra-85418.herokuapp.com/api/shares/" +
+            this.shares[index].item.id
+        )
+        .then((response) => {
+          console.log(response);
+          this.$router.go({
+            path: this.$router.currentRouter.path,
+            force: true,
+          });
+        });
+    },
+    async getShares() {
+      let data = [];
+      let shares = await axios.get(
+        "https://evening-sierra-85418.herokuapp.com/api/shares"
+      );
+      for (let i = 0; i < shares.data.data.length; i++) {
+        await axios
+          .get(
+            "https://evening-sierra-85418.herokuapp.com/api/shares" +
+              shares.data.data[i].id
+          )
+          .then((response) => {
+            if (this.$router.name == "profile") {
+              if (response.data.item.user_id == this.$store.state.user.id) {
+                data.push(response.data);
+              }
+            } else if (this.$ruoter.name == "detail") {
+              if (response.data.item.id == this.id) {
+                data.push(response.data);
+              }
+            } else {
+              data.push(response.data);
+            }
+          });
+      }
+      this.shares = data;
+      console.log(this.shares);
+    },
+  },
+  created() {
+    if (this.$router.name === "home") {
+      this.path = false;
+    }
+    if (this.$router.name === "detail") {
+      this.profile = false;
+    }
+    this.getShares();
+  },
 };
 </script>
 
