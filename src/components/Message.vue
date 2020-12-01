@@ -5,7 +5,7 @@
           <div class="flex">
             <p class="name">{{value.name}}</p>
             <img src="../assets/heart.png" alt="" class="icon" @click="fav(key)">
-            <div class="number">{{value.like.lenght}}</div>
+            <p class="number">{{value.like.lenght}}</p>
             <img
               class="icon"
               src="../assets/cross.png"
@@ -26,7 +26,7 @@
               v-if="profile"
             >
           </div>
-          <p class="text">{{value.share}}</p>
+          <p class="text">{{value.item.share}}</p>
         </div>
       </div>
   </div>
