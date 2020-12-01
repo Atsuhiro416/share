@@ -108,11 +108,11 @@ export default {
               shares.data.data[i].id
           )
           .then((response) => {
-            if (this.$router.name == "profile") {
+            if (this.$route.name == "profile") {
               if (response.data.item.user_id == this.$store.state.user.id) {
                 data.push(response.data);
               }
-            } else if (this.$router.name == "detail") {
+            } else if (this.$route.name == "detail") {
               if (response.data.item.id == this.id) {
                 data.push(response.data);
               }
@@ -126,10 +126,10 @@ export default {
     },
   },
   created() {
-    if (this.$router.name === "home") {
+    if (this.$route.name === "home") {
       this.path = false;
     }
-    if (this.$router.name === "detail") {
+    if (this.$route.name === "detail") {
       this.profile = false;
     }
     this.getShares();
