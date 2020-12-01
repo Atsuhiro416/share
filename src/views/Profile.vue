@@ -39,7 +39,7 @@ export default {
       if (!this.active) {
         axios
           .put("https://evening-sierra-85418.herokuapp.com/api/user", {
-            email: this.$store.user.email,
+            email: this.$store.state.user.email,
             profile: this.profile,
           })
           .then((response) => {
