@@ -71,7 +71,7 @@ export default {
         axios
           .post("https://evening-sierra-85418.herokuapp.com/api/like", {
             share_id: this.shares[index].item.id,
-            user_id: this.$router.state.user.id,
+            user_id: this.$store.state.user.id,
           })
           .then((response) => {
             console.log(response);
