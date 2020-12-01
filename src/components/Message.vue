@@ -112,7 +112,7 @@ export default {
               if (response.data.item.user_id == this.$store.state.user.id) {
                 data.push(response.data);
               }
-            } else if (this.$ruoter.name == "detail") {
+            } else if (this.$router.name == "detail") {
               if (response.data.item.id == this.id) {
                 data.push(response.data);
               }
@@ -132,7 +132,7 @@ export default {
     if (this.$router.name === "detail") {
       this.profile = false;
     }
-    this.getShares()
+    this.getShares();
   },
 };
 </script>
