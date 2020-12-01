@@ -17,7 +17,7 @@
               class="icon detail"
               src="../assets/detail.png"
               @click="
-                $router.psuh({
+                $router.push({
                   path: '/detail/' + value.item.id,
                   params: { id: value.item.id},
                 })
