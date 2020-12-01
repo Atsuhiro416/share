@@ -43,7 +43,7 @@ export default {
       profile: true,
     };
   },
-  method: {
+  methods: {
     fav(index) {
       let result = this.shares[index].like.some((value) => {
         return value.user_id == this.$store.state.user.id;
