@@ -132,7 +132,7 @@ export default {
     if (this.$router.name === "detail") {
       this.profile = false;
     }
-    this.getShares();
+    this.getShares()
   },
 };
 </script>
