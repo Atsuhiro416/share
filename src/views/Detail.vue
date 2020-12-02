@@ -47,7 +47,7 @@ export default {
         .post("https://evening-sierra-85418.herokuapp.com/api/comment", {
           share_id: this.id,
           user_id: this.$store.state.user.id,
-          content: this.contet,
+          content: this.content,
         })
         .then((response) => {
           console.log(response);
@@ -60,7 +60,7 @@ export default {
     },
     comment() {
       axios
-        .get("https://evening-sierra-85418.herokuapp.com/api/shares" + this.id)
+        .get("https://evening-sierra-85418.herokuapp.com/api/shares/" + this.id)
         .then((response) => {
           this.data = response.data.comment;
         });
